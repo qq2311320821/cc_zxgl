@@ -286,6 +286,7 @@ def admin_db():
 
 if __name__ == '__main__':
     init_db()
-    print("服务器启动: http://localhost:5001")
-    print("数据库管理: http://localhost:5001/admin/db")
-    app.run(debug=True, port=5001)
+    port = int(os.environ.get('PORT', 5001))
+    print(f"服务器启动: http://localhost:{port}")
+    print(f"数据库管理: http://localhost:{port}/admin/db")
+    app.run(debug=False, host='0.0.0.0', port=port)
