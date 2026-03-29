@@ -578,9 +578,12 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="specialModalFooter">
                 <button class="btn-sm btn-sm-secondary" onclick="closeModal('specialModal')">取消</button>
                 <button class="btn-sm btn-sm-primary" onclick="saveSpecial()">保存</button>
+            </div>
+            <div class="modal-footer" id="specialModalFooterView" style="display:none;">
+                <button class="btn-sm btn-sm-secondary" onclick="closeModal('specialModal')">关闭</button>
             </div>
         </div>
     </div>
@@ -653,9 +656,12 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="projectModalFooter">
                 <button class="btn-sm btn-sm-secondary" onclick="closeModal('projectModal')">取消</button>
                 <button class="btn-sm btn-sm-primary" onclick="saveProject()">保存</button>
+            </div>
+            <div class="modal-footer" id="projectModalFooterView" style="display:none;">
+                <button class="btn-sm btn-sm-secondary" onclick="closeModal('projectModal')">关闭</button>
             </div>
         </div>
     </div>
@@ -830,6 +836,10 @@
             document.getElementById('specialTemplateGroup').style.display = (id || isView) ? 'block' : 'none';
             document.getElementById('specialPromptGroup').style.display = (id || isView) ? 'block' : 'none';
 
+            // 显示/隐藏底部按钮
+            document.getElementById('specialModalFooter').style.display = isView ? 'none' : 'flex';
+            document.getElementById('specialModalFooterView').style.display = isView ? 'flex' : 'none';
+
             // 设置只读状态
             const inputs = document.querySelectorAll('#specialModal .form-control');
             inputs.forEach(input => {
@@ -874,9 +884,19 @@
             openSpecialModal(id, true);
         }
 
+        function viewImage(url) {
+            if (url) {
+                window.open(url, '_blank');
+            }
+        }
+
         function openProjectModal(id = null, isView = false) {
             document.getElementById('projectModal').classList.add('show');
             document.getElementById('projectModalTitle').textContent = isView ? '查看项目' : (id ? '编辑项目' : '新增项目');
+
+            // 显示/隐藏底部按钮
+            document.getElementById('projectModalFooter').style.display = isView ? 'none' : 'flex';
+            document.getElementById('projectModalFooterView').style.display = isView ? 'flex' : 'none';
 
             // 设置只读状态
             const inputs = document.querySelectorAll('#projectModal .form-control');
@@ -1201,7 +1221,7 @@
                         <td><span class="status-tag ${st.class}">${st.text}</span></td>
                         <td>${s.requirement_template ? `<span style="color:var(--primary);cursor:pointer;" onclick="downloadSpecialTemplate('${s.id}')">${s.requirement_template}</span>` : '<span style="color:var(--gray-400);">未上传</span>'}</td>
                         <td>${prompt ? `<span class="status-tag status-0">${prompt.name}</span>` : '<span style="color:var(--gray-400);">未关联</span>'}</td>
-                        <td><img src="${s.image}" class="special-img"></td>
+                        <td><img src="${s.image}" class="special-img" style="cursor:pointer;" onclick="viewImage('${s.image}')"></td>
                         <td style="color:var(--gray-500);">${s.created_at}</td>
                         <td>
                             <div class="btn-group">
